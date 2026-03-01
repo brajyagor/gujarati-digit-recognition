@@ -7,7 +7,7 @@ import os
 from tensorflow.keras.models import load_model
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-MODEL_PATH = os.path.join(BASE_DIR, "ghDigitReco_10072025_1.h5")
+MODEL_PATH = os.path.join(BASE_DIR, "/ghDigitReco_10072025_1.h5")
 
 print("CWD:", os.getcwd())
 print("BASE_DIR:", BASE_DIR)
