@@ -2,11 +2,32 @@ import gradio as gr
 import numpy as np
 from PIL import Image
 import tensorflow as tf
-import traceback
+import os
+import gdown
 
 # Load your trained model
-model = tf.keras.models.load_model("ghDigitReco_10072025_1.h5")
 
+MODEL_PATH = "ghDigitReco_10072025_1.h5"
+
+def load_model_safely():
+    try:
+        if not os.path.exists(MODEL_PATH):
+            print("Downloading model from Google Drive...")
+            url = "https://drive.google.com/uc?id=1dkED1uKIq1iBjq2I4TkjzMxHGTsKU4F8"
+            gdown.download(url, MODEL_PATH, quiet=False)
+
+        if not os.path.exists(MODEL_PATH):
+            print("Model file still not found after download.")
+            return None
+
+        print("Loading model...")
+        return tf.keras.models.load_model(MODEL_PATH)
+
+    except Exception as e:
+        print("MODEL LOAD ERROR:", str(e))
+        return None
+
+model = load_model_safely()
 
 # Preprocessing (same as tkinter version)
 def preprocess_like_tkinter(img_data):
@@ -30,19 +51,24 @@ def preprocess_like_tkinter(img_data):
 # Recognition function
 def recognize(img_data):
     try:
+        if model is None:
+            return "### ⚠️ Model failed to load on server", None
+
         arr = preprocess_like_tkinter(img_data)
+
         if arr is None:
-            return "### ⚠️ Error: Preprocessing failed", None
+            return "### ⚠️ Preprocessing failed", None
 
         preds = model.predict(arr)
         digit = int(np.argmax(preds))
         confidence = float(preds[0][digit])
-        result_text = f"# 🎯 {digit}\nConfidence: {confidence*100:.2f}%"
 
-        return result_text, None  # clear sketch after recognition
+        result_text = f"# 🎯 {digit}\nConfidence: {confidence*100:.2f}%"
+        return result_text, None
+
     except Exception as e:
-        traceback.print_exc()
         return f"### ⚠️ Error: {str(e)}", None
+        
 
 # Clear function → resets everything
 def clear_all():
@@ -68,7 +94,14 @@ with gr.Blocks() as demo:
 
     recognize_btn.click(fn=recognize, inputs=sketch, outputs=[big_result, sketch])
     clear_btn.click(fn=clear_all, inputs=None, outputs=[big_result, sketch])
+
 import os
 
-port = int(os.environ.get("PORT", 7860))
-demo.launch(server_name="0.0.0.0", server_port=port)
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 10000))
+    print("Starting Gradio on port:", port)
+
+    demo.launch(
+        server_name="0.0.0.0",
+        server_port=port
+    )
