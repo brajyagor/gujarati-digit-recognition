@@ -5,30 +5,34 @@ import tensorflow as tf
 import os
 import gdown
 
-# Load your trained model
+import os
 
-MODEL_PATH = "ghDigitReco_10072025_1.h5"
+print("Current working directory:", os.getcwd())
+print("Files in current directory:")
+print(os.listdir("."))
 
-def load_model_safely():
-    try:
-        if not os.path.exists(MODEL_PATH):
-            print("Downloading model from Google Drive...")
-            url = "https://drive.google.com/uc?id=1dkED1uKIq1iBjq2I4TkjzMxHGTsKU4F8"
-            gdown.download(url, MODEL_PATH, quiet=False)
+print("Model path:", MODEL_PATH)
+print("Model exists:", os.path.exists(MODEL_PATH))
 
-        if not os.path.exists(MODEL_PATH):
-            print("Model file still not found after download.")
-            return None
+import os
+from tensorflow.keras.models import load_model
 
-        print("Loading model...")
-        return tf.keras.models.load_model(MODEL_PATH)
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+MODEL_PATH = os.path.join(BASE_DIR, "ghDigitReco_10072025_1.h5")
 
-    except Exception as e:
-        print("MODEL LOAD ERROR:", str(e))
-        return None
+print("CWD:", os.getcwd())
+print("BASE_DIR:", BASE_DIR)
+print("Files in BASE_DIR:", os.listdir(BASE_DIR))
+print("MODEL_PATH:", MODEL_PATH)
+print("MODEL EXISTS:", os.path.exists(MODEL_PATH))
 
-model = load_model_safely()
-
+try:
+    model = load_model(MODEL_PATH)
+    print("Model loaded successfully")
+except Exception as e:
+    print("Model load error:", e)
+    model = None
+    
 # Preprocessing (same as tkinter version)
 def preprocess_like_tkinter(img_data):
     try:
