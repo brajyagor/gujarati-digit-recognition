@@ -2,18 +2,7 @@ import gradio as gr
 import numpy as np
 from PIL import Image
 import tensorflow as tf
-import os
 import gdown
-
-import os
-
-print("Current working directory:", os.getcwd())
-print("Files in current directory:")
-print(os.listdir("."))
-
-print("Model path:", MODEL_PATH)
-print("Model exists:", os.path.exists(MODEL_PATH))
-
 import os
 from tensorflow.keras.models import load_model
 
@@ -98,8 +87,6 @@ with gr.Blocks() as demo:
 
     recognize_btn.click(fn=recognize, inputs=sketch, outputs=[big_result, sketch])
     clear_btn.click(fn=clear_all, inputs=None, outputs=[big_result, sketch])
-
-import os
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))
