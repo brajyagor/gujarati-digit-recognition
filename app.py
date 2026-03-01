@@ -3,15 +3,15 @@ import numpy as np
 from PIL import Image
 import tensorflow as tf
 import gdown
+
 import os
 from tensorflow.keras.models import load_model
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-MODEL_PATH = os.path.join(BASE_DIR, "/ghDigitReco_10072025_1.h5")
+MODEL_PATH = os.path.join(BASE_DIR, "ghDigitReco_10072025_1.h5")
 
-print("CWD:", os.getcwd())
 print("BASE_DIR:", BASE_DIR)
-print("Files in BASE_DIR:", os.listdir(BASE_DIR))
+print("Files:", os.listdir(BASE_DIR))
 print("MODEL_PATH:", MODEL_PATH)
 print("MODEL EXISTS:", os.path.exists(MODEL_PATH))
 
