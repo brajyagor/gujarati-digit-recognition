@@ -9,7 +9,7 @@ from tensorflow.keras.models import load_model
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 MODEL_PATH = os.path.join(BASE_DIR, "ghDigitReco_10072025_1.h5")
-MODEL_URL = "https://raw.githubusercontent.com/brajyagor/gujarati-digit-recognition/main/ghDigitReco_10072025_1.h5"
+MODEL_URL = "https://media.githubusercontent.com/media/brajyagor/gujarati-digit-recognition/main/ghDigitReco_10072025_1.h5"
 
 print("BASE_DIR:", BASE_DIR)
 print("Files:", os.listdir(BASE_DIR))
