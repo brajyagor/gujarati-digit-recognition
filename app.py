@@ -9,6 +9,7 @@ from tensorflow.keras.models import load_model
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 MODEL_PATH = os.path.join(BASE_DIR, "ghDigitReco_10072025_1.h5")
+MODEL_URL = "https://raw.githubusercontent.com/brajyagor/gujarati-digit-recognition/main/ghDigitReco_10072025_1.h5"
 
 print("BASE_DIR:", BASE_DIR)
 print("Files:", os.listdir(BASE_DIR))
@@ -16,8 +17,10 @@ print("MODEL_PATH:", MODEL_PATH)
 print("MODEL EXISTS:", os.path.exists(MODEL_PATH))
 
 try:
+    if not os.path.exists(MODEL_PATH):
+        os.makedirs("model", exist_ok=True)
+        urllib.request.urlretrieve(MODEL_URL, MODEL_PATH)
     model = load_model(MODEL_PATH)
-    print("Model loaded successfully")
 except Exception as e:
     print("Model load error:", e)
     model = None
